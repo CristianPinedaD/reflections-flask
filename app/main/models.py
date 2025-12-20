@@ -58,7 +58,7 @@ class Admin(User):
 class Post(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key = True)
     name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(132))
-    date : sqlo.Mapped[Optional[datetime]]  = sqlo.mapped_column( default=lambda : datetime.strptime(sqla.String(25), format_string))
+    date : sqlo.Mapped[datetime]  = sqlo.mapped_column(sqla.DateTime, default=datetime.utcnow())
     body : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(2048))
     writer_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(User.id, ondelete='CASCADE'), index = True)
     
