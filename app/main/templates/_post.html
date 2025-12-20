@@ -8,11 +8,10 @@
             <td width="80%" >
                                 <div class="postmessage">  
                                         <span class="postbody">
-                                            {{post.content}}
+                                            {{post.body}}
                                         </span>
                                 </div> <br> 
-                
-                <a href="{{ url_for('main.display_post', post_id = post.id) }}" class = "btn btn-success" style="color: aliceblue;">Click Here to See</a>    
+            
                 <br>   
                 <br>      
                 <span class="posttimestamp">Starts: {{ moment(post.date).format('LLL') }} </span>

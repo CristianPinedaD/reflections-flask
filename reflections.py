@@ -12,5 +12,5 @@ def make_shell_context():
     
 @app.before_request
 def initDB(*args, **kwargs):
-    # initialize db here
-    pass 
+    if app._got_first_request:
+        db.create_all()

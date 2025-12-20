@@ -32,3 +32,15 @@ def create():
         flash('Reflection Posted!')
         return redirect(url_for('main.index'))
     return render_template('create.html', title='Post Reflection', form=pform, user=current_user)
+
+@bp_main.route('/post/<int:post_id>/delete', methods=['POST'])
+@login_required
+def deletepost(post_id : int):
+    post = db.session.get(Post, post_id)
+    if post: 
+        db.session.delete(post)
+        db.session.commit()
+        flash('Post succesfully deleted!')
+        return redirect(url_for('main.index'))
+    flash('Post not found!')
+    return redirect(url_for('main.index'))
