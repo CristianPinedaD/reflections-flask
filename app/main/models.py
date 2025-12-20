@@ -7,6 +7,11 @@ import sqlalchemy.orm as sqlo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy import Table, Column, Integer, ForeignKey
+from app import login
+
+@login.user_loader
+def load_user(id):
+    return db.session.get(User, int(id))
 
 class User(db.Model, UserMixin):
     __tablename__='user'
@@ -58,7 +63,7 @@ class Admin(User):
 class Post(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key = True)
     name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(132))
-    date : sqlo.Mapped[Optional[datetime]]  = sqlo.mapped_column( default=lambda : datetime.strptime(sqla.String(25), format_string))
+    date : sqlo.Mapped[datetime]  = sqlo.mapped_column(sqla.DateTime, default=datetime.utcnow())
     body : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(2048))
     writer_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(User.id, ondelete='CASCADE'), index = True)
     
