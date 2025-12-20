@@ -6,7 +6,7 @@ from app.main.forms import PostForm
 from datetime import datetime, timezone
 from flask_login import current_user, logout_user, login_required
 from app.main.decorators import is_admin
-from app_main import main_blueprint as bp_main 
+from app.main import main_blueprint as bp_main 
 
 @bp_main.route('/', methods=['GET'])
 @bp_main.route('/index', methods=['GET'])

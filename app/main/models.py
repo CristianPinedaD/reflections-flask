@@ -7,6 +7,11 @@ import sqlalchemy.orm as sqlo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy import Table, Column, Integer, ForeignKey
+from app import login
+
+@login.user_loader
+def load_user(id):
+    return db.session.get(User, int(id))
 
 class User(db.Model, UserMixin):
     __tablename__='user'
