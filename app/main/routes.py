@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request, jsonify
 import sqlalchemy as sqla
 from app import db
 from app.main.models import Post, User, Admin
-from app.main.forms import PostForm
+from app.main.forms import PostForm, EditProfileForm
 from datetime import datetime, timezone
 from flask_login import current_user, logout_user, login_required
 from app.main.decorators import is_admin
@@ -55,3 +55,25 @@ def view_profile(userid: int):
     myposts = user.get_posts()
     num_posts = len(myposts)
     return render_template('profile.html', title='View Profile', user=user, num_posts=num_posts, posts=myposts)
+    
+@bp_main.route('/user/<int:userid>/profile/edit', methods=['GET','POST'])
+@login_required
+def edit_profile(userid: int):
+    user = db.session.get(User, userid)
+    if user is None:
+        flash('User does not exist!')
+        return redirect(url_for('main.index'))
+    eform = EditProfileForm()
+    eform.name.data = user.get_name()
+    eform.username.data = user.get_username()
+        
+    if eform.validate_on_submit():
+        user.name = eform.name.data
+        user.username = eform.username.data
+        
+        db.session.add(user)
+        db.session.commit()
+        flash('Profile Updated!')
+        return redirect(url_for('main.view_profile', userid = user.get_id()))
+    
+    return render_template('edit_user.html', title='Edit Profile', form=eform)
