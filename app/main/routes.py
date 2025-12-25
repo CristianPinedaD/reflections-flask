@@ -44,3 +44,14 @@ def deletepost(post_id : int):
         return redirect(url_for('main.index'))
     flash('Post not found!')
     return redirect(url_for('main.index'))
+
+@bp_main.route('/user/<int:userid>/profile', methods=['GET'])
+@login_required
+def view_profile(userid: int):
+    user = db.session.get(User, userid)
+    if user is None:
+        flash('User does not exist!')
+        return redirect(url_for('main.index'))
+    myposts = user.get_posts()
+    num_posts = len(myposts)
+    return render_template('profile.html', title='View Profile', user=user, num_posts=num_posts, posts=myposts)
