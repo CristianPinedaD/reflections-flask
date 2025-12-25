@@ -41,6 +41,7 @@
                     <td style="color: black;"> Current user is: <span class="useritem">_______</span> </td>
                     {% else %}
                     <td style="color: black; "> Current user is: <span class="useritem">{{current_user.username}}</span> </td>
+                    <td ><a href="{{ url_for('main.view_profile', userid=current_user.id) }}" class = "button" style="color: black;">Profile</a></td>
                     {% endif %}
                     {% if current_user.is_anonymous %}
                     <td><a href="{{ url_for('auth.login') }}" class = "button" style="color: black;"> Login </a></td>
